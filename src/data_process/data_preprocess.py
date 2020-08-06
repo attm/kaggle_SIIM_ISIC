@@ -2,6 +2,8 @@ import os
 import numpy as np
 import PIL
 from PIL import Image
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 def load_image(load_path : str) -> PIL.Image.Image:

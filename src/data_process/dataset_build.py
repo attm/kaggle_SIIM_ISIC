@@ -14,6 +14,11 @@ def get_label_from_csv(img_name : str, csv_df : pd.DataFrame) -> int:
     else:
         raise IndexError("get_label_from_csv: label not found, image name given is {0}".format(img_name))
 
+def get_images_names_with_label(csv_df : pd.DataFrame, label : int) -> list:
+    df_row = csv_df.loc[csv_df['target'] == label]
+    img_names = df_row['image_name'].values
+    return img_names
+
 def image_to_numpy(img : PIL.Image.Image) -> np.ndarray:
     if not isinstance(img, PIL.Image.Image):
         raise TypeError("image_to_numpy: expected img of type PIL.Image.Image, got {0}".format(type(img)))

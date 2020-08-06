@@ -1,4 +1,4 @@
-import os
+import os, shutil
 from os.path import join as pjoin
 import numpy as np
 import pandas as pd
@@ -11,9 +11,9 @@ IMAGES_FOLDER_PATH = pjoin(cwd, "data/processed")
 TRAIN_FOLDER_PATH = pjoin(IMAGES_FOLDER_PATH, "train")
 TEST_FOLDER_PATH = pjoin(IMAGES_FOLDER_PATH, "test")
 # CSV dataset path's
-CSV_DATA_PATH = pjoin(cwd, "data/datasets")
-TRAIN_CSV_PATH = pjoin(CSV_DATA_PATH, "train.csv")
-TEST_CSV_PATH = pjoin(CSV_DATA_PATH, "test.csv")
+DATASETS_PATH = pjoin(cwd, "data/datasets")
+TRAIN_CSV_PATH = pjoin(DATASETS_PATH, "train.csv")
+TEST_CSV_PATH = pjoin(DATASETS_PATH, "test.csv")
 
 def create_samples(images_folder_path : str, csv_df : pd.DataFrame) -> np.ndarray:
     files_in_folder = [f for f in os.listdir(images_folder_path) if os.path.isfile(pjoin(images_folder_path, f))]
@@ -29,8 +29,9 @@ def create_samples(images_folder_path : str, csv_df : pd.DataFrame) -> np.ndarra
 def main():
     df = pd.read_csv(TRAIN_CSV_PATH)
     imgs, labels = create_samples(TRAIN_FOLDER_PATH, df)
-    print(imgs.shape)
-    print(labels.shape)
+    np.save(pjoin(DATASETS_PATH, "X_train.npy"), imgs)
+    np.save(pjoin(DATASETS_PATH, "y_train.npy"), labels)
+    print("Created train dataset, shape of X is {0}, shape of y is {1}".format(imgs.shape, labels.shape))
 
 if __name__ == "__main__":
     main()
