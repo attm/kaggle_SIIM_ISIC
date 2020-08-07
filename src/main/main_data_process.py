@@ -8,6 +8,8 @@ from src.data_process.dataset_build import get_images_names_with_label
 
 
 cwd = os.getcwd()
+PROCESS_TRAIN = False
+PROCESS_TEST = True
 # Raw data pathes for selection
 RAW_DATA_FOLDER_PATH = pjoin(cwd, "data/raw/full")
 TRAIN_RAW_FOLDER_PATH = pjoin(RAW_DATA_FOLDER_PATH, "train")
@@ -69,6 +71,7 @@ def select_images(images_folder_path : str, selected_images_folder_path : str, i
     print("select_images: copied {0} images from {1} to {2}".format(i, images_folder_path, selected_images_folder_path))
 
 def select_and_preprocess_train():
+    print("Selecting and processing train data")
     # Removing and recreating selected folder
     shutil.rmtree(SELECTED_TRAIN_DATA_FOLDER_PATH)
     os.mkdir(SELECTED_TRAIN_DATA_FOLDER_PATH)
@@ -96,8 +99,19 @@ def select_and_preprocess_train():
 
     process_images_from_folder(SELECTED_TRAIN_DATA_FOLDER_PATH, PROCESSED_TRAIN_DATA_FOLDER_PATH)
 
+def select_and_preprocess_test():
+    print("Selecting and processing test data")
+    shutil.rmtree(PROCESSED_TEST_DATA_FOLDER_PATH)
+    os.mkdir(PROCESSED_TEST_DATA_FOLDER_PATH)
+
+    process_images_from_folder(TEST_RAW_FOLDER_PATH, PROCESSED_TEST_DATA_FOLDER_PATH)
+
 def main():
-    select_and_preprocess_train()
+    if PROCESS_TRAIN:
+        select_and_preprocess_train()
+
+    if PROCESS_TEST:
+        select_and_preprocess_test()
 
 if __name__ == "__main__":
     main()

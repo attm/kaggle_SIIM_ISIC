@@ -19,9 +19,9 @@ tf.keras.backend.clear_session()
 if USE_CPU:
     os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 else:
-    # physical_devices = tf.config.experimental.list_physical_devices('GPU')
-    # tf.config.experimental.set_memory_growth(physical_devices[0], True)
-    pass
+    physical_devices = tf.config.experimental.list_physical_devices('GPU')
+    if len(physical_devices) > 0:
+        tf.config.experimental.set_virtual_device_configuration(physical_devices[0], [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=8000)])
 
 def main() -> None:
     model = define_model(input_shape=(512, 512, 3))
