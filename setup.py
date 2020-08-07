@@ -7,4 +7,4 @@ setup(
    description='Personal project package',
    author='atgm1113',
    author_email='atgm1113@gmail.com',
-   packages=find_packages(include=["src", "src.data_process", "src.main", "src.models_build"], exclude=["data"]))
+   packages=find_packages(include=["src", "src.data_process", "src.main", "src.model"], exclude=["data"]))

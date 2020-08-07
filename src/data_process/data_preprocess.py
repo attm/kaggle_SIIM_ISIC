@@ -17,6 +17,6 @@ def save_image(image : PIL.Image.Image, save_path : str) -> None:
         raise TypeError("save_image: can't save image, expected image of type PIL.Image.Image, but got {0}".format(type(image)))
     image.save(save_path)
 
-def resize_image(image : PIL.Image.Image, new_size=(1024, 1024)) -> PIL.Image.Image:
+def resize_image(image : PIL.Image.Image, new_size=(512, 512)) -> PIL.Image.Image:
     resized_image = image.resize(new_size)
     return resized_image

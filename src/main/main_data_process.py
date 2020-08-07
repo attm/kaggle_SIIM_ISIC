@@ -52,8 +52,8 @@ def process_images_from_folder(images_folder_path : str, processed_images_folder
         save_img_path = pjoin(processed_images_folder_path, img_file)
         save_image(img, save_img_path)
 
-def process_image(img : PIL.Image.Image) -> PIL.Image.Image:
-    img = resize_image(img)
+def process_image(img : PIL.Image.Image, new_size : tuple = (512, 512)) -> PIL.Image.Image:
+    img = resize_image(img, new_size=new_size)
     return img
 
 def select_images(images_folder_path : str, selected_images_folder_path : str, images_names : np.ndarray) -> None:
@@ -69,6 +69,14 @@ def select_images(images_folder_path : str, selected_images_folder_path : str, i
     print("select_images: copied {0} images from {1} to {2}".format(i, images_folder_path, selected_images_folder_path))
 
 def select_and_preprocess_train():
+    # Removing and recreating selected folder
+    shutil.rmtree(SELECTED_TRAIN_DATA_FOLDER_PATH)
+    os.mkdir(SELECTED_TRAIN_DATA_FOLDER_PATH)
+
+    # Removing and recreating processed folder
+    shutil.rmtree(PROCESSED_TRAIN_DATA_FOLDER_PATH)
+    os.mkdir(PROCESSED_TRAIN_DATA_FOLDER_PATH)
+
     # Selecting part of the images, placing those images into selected folder
     df = pd.read_csv(TRAIN_CSV_PATH)
     positive_images_names = get_images_names_with_label(df, 1)
