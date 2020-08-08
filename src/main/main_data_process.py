@@ -9,23 +9,23 @@ from src.data_process.dataset_build import get_images_names_with_label
 
 cwd = os.getcwd()
 PROCESS_TRAIN = False
-PROCESS_TEST = True
+PROCESS_SUBMISSION = True
 # Raw data pathes for selection
 RAW_DATA_FOLDER_PATH = pjoin(cwd, "data/raw/full")
 TRAIN_RAW_FOLDER_PATH = pjoin(RAW_DATA_FOLDER_PATH, "train")
-TEST_RAW_FOLDER_PATH = pjoin(RAW_DATA_FOLDER_PATH, "test")
+SUBMISSION_RAW_FOLDER_PATH = pjoin(RAW_DATA_FOLDER_PATH, "submission")
 # Selected images path
 SELECTED_DATA_FOLDER_PATH = pjoin(cwd, "data/raw/selected")
 SELECTED_TRAIN_DATA_FOLDER_PATH = pjoin(SELECTED_DATA_FOLDER_PATH, "train")
-SELECTED_TEST_DATA_FOLDER_PATH = pjoin(SELECTED_DATA_FOLDER_PATH, "test")
+SELECTED_SUBMISSION_DATA_FOLDER_PATH = pjoin(SELECTED_DATA_FOLDER_PATH, "submission")
 # Processed images path
 PROCESSED_DATA_FOLDER_PATH = pjoin(cwd, "data/processed")
 PROCESSED_TRAIN_DATA_FOLDER_PATH = pjoin(PROCESSED_DATA_FOLDER_PATH, "train")
-PROCESSED_TEST_DATA_FOLDER_PATH = pjoin(PROCESSED_DATA_FOLDER_PATH, "test")
+PROCESSED_SUBMISSION_DATA_FOLDER_PATH = pjoin(PROCESSED_DATA_FOLDER_PATH, "submission")
 # CSV dataset path's
 DATASETS_PATH = pjoin(cwd, "data/datasets")
 TRAIN_CSV_PATH = pjoin(DATASETS_PATH, "train.csv")
-TEST_CSV_PATH = pjoin(DATASETS_PATH, "test.csv")
+SUBMISSION_CSV_PATH = pjoin(DATASETS_PATH, "submission.csv")
 # How many samples for each label
 POSITIVE_SAMPLES = 580
 NEGATIVE_SAMPLES = 580
@@ -36,6 +36,7 @@ def process_images_from_folder(images_folder_path : str, processed_images_folder
 
     Parameters:
         images_folder_path (str) : Folder with images that needs to be processed.
+        processed_images_folder_path (str) : Folder where processed images will be saved.
     Returns:
         None.
     """
@@ -54,11 +55,29 @@ def process_images_from_folder(images_folder_path : str, processed_images_folder
         save_img_path = pjoin(processed_images_folder_path, img_file)
         save_image(img, save_img_path)
 
-def process_image(img : PIL.Image.Image, new_size : tuple = (512, 512)) -> PIL.Image.Image:
-    img = resize_image(img, new_size=new_size)
+def process_image(img : PIL.Image.Image) -> PIL.Image.Image:
+    """
+    Processing single image.
+
+    Parameters:
+        img (PIL.Image.Image) : Image to be proccessed.
+    Returns:
+        img (PIL.Image.Image) : Processed image.
+    """
+    img = resize_image(img)
     return img
 
 def select_images(images_folder_path : str, selected_images_folder_path : str, images_names : np.ndarray) -> None:
+    """
+    Selecting images with given name from given folder.
+
+    Parameters:
+        images_folder_path (str)
+        selected_images_folder_path (str)
+        images_names (np.ndarray)
+    Returns:
+        None
+    """
     files_in_folder = [f for f in os.listdir(images_folder_path) if os.path.isfile(pjoin(images_folder_path, f))]
     i = 0
     for img_file in files_in_folder:
@@ -99,19 +118,19 @@ def select_and_preprocess_train():
 
     process_images_from_folder(SELECTED_TRAIN_DATA_FOLDER_PATH, PROCESSED_TRAIN_DATA_FOLDER_PATH)
 
-def select_and_preprocess_test():
-    print("Selecting and processing test data")
-    shutil.rmtree(PROCESSED_TEST_DATA_FOLDER_PATH)
-    os.mkdir(PROCESSED_TEST_DATA_FOLDER_PATH)
+def select_and_preprocess_submission():
+    print("Selecting and processing SUBMISSION data")
+    shutil.rmtree(PROCESSED_SUBMISSION_DATA_FOLDER_PATH)
+    os.mkdir(PROCESSED_SUBMISSION_DATA_FOLDER_PATH)
 
-    process_images_from_folder(TEST_RAW_FOLDER_PATH, PROCESSED_TEST_DATA_FOLDER_PATH)
+    process_images_from_folder(SUBMISSION_RAW_FOLDER_PATH, PROCESSED_SUBMISSION_DATA_FOLDER_PATH)
 
 def main():
     if PROCESS_TRAIN:
         select_and_preprocess_train()
 
-    if PROCESS_TEST:
-        select_and_preprocess_test()
+    if PROCESS_SUBMISSION:
+        select_and_preprocess_submission()
 
 if __name__ == "__main__":
     main()

@@ -7,6 +7,14 @@ from src.data_process.data_preprocess import load_image
 
 
 def get_label_from_csv(img_name : str, csv_df : pd.DataFrame) -> int:
+    """
+    Finds and returns label for given image name from pandas df.
+    Image name column must be "image_name", label column must be "target".
+
+    Parameters:
+        img_name (str) : name of the image.
+        csv_df (pd.DataFrame) : dataframe with images names and labels.
+    """
     df_row = csv_df.loc[csv_df['image_name'] == img_name]
     label = df_row['target'].values[0]
     if label is not None:
@@ -15,19 +23,32 @@ def get_label_from_csv(img_name : str, csv_df : pd.DataFrame) -> int:
         raise IndexError("get_label_from_csv: label not found, image name given is {0}".format(img_name))
 
 def get_images_names_with_label(csv_df : pd.DataFrame, label : int) -> list:
+    """
+    Finds all images names with given label.
+    Image name column must be "image_name", label column must be "target".
+
+    Parameters:
+        csv_df (pd.DataFrame) : dataframe with images names and labels.
+        label (int) : nedeed label.
+    Returns:
+        img_names (list(str)) : list of images names.
+    """
     df_row = csv_df.loc[csv_df['target'] == label]
     img_names = df_row['image_name'].values
     return img_names
 
-def image_to_numpy(img : PIL.Image.Image) -> np.ndarray:
-    if not isinstance(img, PIL.Image.Image):
-        raise TypeError("image_to_numpy: expected img of type PIL.Image.Image, got {0}".format(type(img)))
-    img = img.convert("RGB")
-    np_img = np.array(img, dtype="float16")
-    np_img *= 1.0/255.0
-    return np_img
-
 def generate_sample(image_path : str, csv_df : pd.DataFrame) -> np.ndarray:
+    """
+    Generates X and y for given image in folder.
+    Finds label for that image in given pd.DataFrame.
+
+    Parameters:
+        image_path (str) : Path for image file.
+        csv_df (pd.DataFrame) : dataframe with images names and labels.
+    Returns:
+        X (np.ndarray) : image in np.ndarray format.
+        y (np.ndarray) : label in np.ndarray format.
+    """
     if not os.path.exists(image_path):
         raise FileNotFoundError("generate_sample: can't load image, image path given is {0}".format(image_path))
     # Loading image from folder

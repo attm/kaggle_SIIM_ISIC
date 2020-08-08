@@ -4,7 +4,8 @@ import numpy as np
 import pandas as pd
 import PIL
 from PIL import Image
-from src.data_process.dataset_build import generate_sample, image_to_numpy
+from src.data_process.dataset_build import generate_sample
+from src.data_process.data_preprocess import image_to_numpy
 
 
 cwd = os.getcwd()
