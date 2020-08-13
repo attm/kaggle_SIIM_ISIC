@@ -25,6 +25,6 @@ def image_to_numpy(img : PIL.Image.Image) -> np.ndarray:
     if not isinstance(img, PIL.Image.Image):
         raise TypeError("image_to_numpy: expected img of type PIL.Image.Image, got {0}".format(type(img)))
     img = img.convert("RGB")
-    np_img = np.array(img, dtype="float16")
-    np_img *= 1.0/255.0
+    np_img = np.array(img, dtype="int8")
+    #np_img *= 1.0/255.0
     return np_img

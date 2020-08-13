@@ -5,12 +5,12 @@ import pandas as pd
 import PIL
 from PIL import Image
 from src.data_process.dataset_build import generate_sample
-from src.data_process.data_preprocess import image_to_numpy
+from src.data_process.data_preprocess import image_to_numpy, load_image
 
 
 cwd = os.getcwd()
 CREATE_TRAIN = True
-CREATE_SUBMISSION = False
+CREATE_SUBMISSION = True
 
 # Images folders path's
 IMAGES_FOLDER_PATH = pjoin(cwd, "data/processed")
@@ -30,7 +30,7 @@ def create_samples(images_folder_path : str, csv_df : pd.DataFrame) -> np.ndarra
         np_img, label = generate_sample(img_path, csv_df)
         numpy_images.append(np_img)
         labels.append(label)
-    return np.array(numpy_images, dtype="float16"), np.array(labels, dtype="int8")
+    return np.array(numpy_images, dtype="int8"), np.array(labels, dtype="int8")
 
 def create_submission_dataset(images_folder_path : str, csv_df : pd.DataFrame) -> np.ndarray:
     files_in_folder = [f for f in os.listdir(images_folder_path) if os.path.isfile(pjoin(images_folder_path, f))]
@@ -41,10 +41,10 @@ def create_submission_dataset(images_folder_path : str, csv_df : pd.DataFrame) -
             raise FileNotFoundError("create_submission_dataset: image named {0} presented in csv file, but NOT found in folder".format(image_name))
         
         img_path = pjoin(images_folder_path, image_name)
-        img = Image.open(img_path + ".jpg")
+        img = load_image(img_path + ".jpg")
         numpy_images.append(image_to_numpy(img))
     
-    return np.array(numpy_images, dtype="float16")
+    return np.array(numpy_images, dtype="int8")
 
 def main():
     if CREATE_TRAIN:

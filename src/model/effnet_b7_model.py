@@ -28,6 +28,6 @@ def define_model(input_shape : tuple = (1024, 1024, 3)) -> Model:
 
     optimizer = Adam()
 
-    effnet_model.compile(optimizer=optimizer, loss="binary_crossentropy", metrics=["accuracy"])
+    effnet_model.compile(optimizer=optimizer, loss="binary_crossentropy", metrics=["acc"])
 
     return effnet_model

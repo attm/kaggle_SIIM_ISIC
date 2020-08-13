@@ -3,7 +3,7 @@ from os.path import join as pjoin
 import numpy as np
 import pandas as pd
 import PIL
-from src.data_process.data_preprocess import load_image
+from src.data_process.data_preprocess import load_image, image_to_numpy
 
 
 def get_label_from_csv(img_name : str, csv_df : pd.DataFrame) -> int:

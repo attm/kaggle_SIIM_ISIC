@@ -119,7 +119,7 @@ def select_and_preprocess_train():
     process_images_from_folder(SELECTED_TRAIN_DATA_FOLDER_PATH, PROCESSED_TRAIN_DATA_FOLDER_PATH)
 
 def select_and_preprocess_submission():
-    print("Selecting and processing SUBMISSION data")
+    print("Selecting and processing submission data")
     shutil.rmtree(PROCESSED_SUBMISSION_DATA_FOLDER_PATH)
     os.mkdir(PROCESSED_SUBMISSION_DATA_FOLDER_PATH)
 
